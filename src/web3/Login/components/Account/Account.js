@@ -9,15 +9,24 @@ import {
   MenuItem, 
   Avatar, 
   Link, 
-  IconButton 
+  IconButton, 
+  Tooltip  // Added Tooltip for better UX
 } from '@mui/material';
 
-import MenuPopover from 'components/MenuPopover';  
+import MenuPopover from 'components/MenuPopover';
 
 const MENU_OPTIONS = [
   {
     label: 'Assets Owned',
     route: '/assets',
+  },
+  {
+    label: 'Profile Settings',  // Added new menu option
+    route: '/profile-settings',
+  },
+  {
+    label: 'Notifications',  // Added new menu option
+    route: '/notifications',
   },
 ];
 
@@ -34,26 +43,29 @@ function Account({ address, icon, handleLogout }) {
 
   return (
     <>
-      <IconButton
-        ref={anchorRef}
-        onClick={handleOpen}
-        sx={{
-          p: 0,
-          ...(open && {
-            '&:before': {
-              zIndex: 1,
-              content: "''",
-              width: '100%',
-              height: '100%',
-              borderRadius: '50%',
-              position: 'absolute',
-              bgcolor: (theme) => alpha(theme.palette.grey[900], 0.8),
-            },
-          }),
-        }}
-      >
-        <Avatar src={icon} alt='icon' />
-      </IconButton>
+      <Tooltip title="Account Settings">  {/* Added Tooltip */}
+        <IconButton
+          ref={anchorRef}
+          onClick={handleOpen}
+          sx={{
+            p: 0,
+            ...(open && {
+              '&:before': {
+                zIndex: 1,
+                content: "''",
+                width: '100%',
+                height: '100%',
+                borderRadius: '50%',
+                position: 'absolute',
+                bgcolor: (theme) => alpha(theme.palette.grey[900], 0.8),
+              },
+            }),
+          }}
+        >
+          <Avatar src={icon} alt='icon' />
+        </IconButton>
+      </Tooltip>
+      
       <MenuPopover
         open={Boolean(open)}
         anchorEl={open}
@@ -78,7 +90,12 @@ function Account({ address, icon, handleLogout }) {
 
         <Stack sx={{ p: 1 }}>
           {MENU_OPTIONS.map((option) => (
-            <MenuItem key={option.label} component={Link} href={option.route} onClick={handleClose}>
+            <MenuItem 
+              key={option.label} 
+              component={Link} 
+              href={option.route} 
+              onClick={handleClose}
+            >
               {option.label}
             </MenuItem>
           ))}
